@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@routes/*": ["./routes/*"],
+      "@utils/*": ["./utils/*"],
+      "@controllers/*": ["./controllers/*"],
+      "@models/*": ["./models/*"],
+      "@middlewares/*": ["./middlewares/*"],
+      "@config/*": ["./config/*"],
+      "@services/*": ["./services/*"],
+      "@sequelize": ["./db/sequelize.js"],
+      "@mongo": ["./db/mongo.js"],
+      "@redis": ["./db/redis.js"],
+      "@/*": ["./*"]
+    }
+  }
+}

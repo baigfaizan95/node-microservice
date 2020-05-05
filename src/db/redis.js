@@ -1,13 +1,13 @@
-const redis = require('redis');
-const { promisify } = require('util');
-const { to } = require('../utils');
-const logger = require('../logger');
+import redis from 'redis';
+import { promisify } from 'util';
+import { to } from '@utils';
+import logger from '@/logger';
 
 class Redis {
   constructor(uri) {
     if (uri) {
       this.client = redis.createClient(uri);
-      this.client.on('error', function(error) {
+      this.client.on('error', function (error) {
         throw error;
       });
     } else {
@@ -123,4 +123,4 @@ class Redis {
   }
 }
 
-module.exports = new Redis(process.env.REDIS_URI);
+export default new Redis(process.env.REDIS_URI);

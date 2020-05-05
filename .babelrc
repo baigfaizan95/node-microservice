@@ -1,0 +1,24 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@": "./src",
+          "@routes": "./src/routes",
+          "@utils": "./src/utils",
+          "@controllers": "./src/controllers",
+          "@models": "./src/models",
+          "@middlewares": "./src/middlewares",
+          "@config": "./src/config",
+          "@services": "./src/services",
+          "@sequelize": "./src/db/sequelize.js",
+          "@mongo": "./src/db/mongo.js",
+          "@redis": "./src/db/redis.js"
+        }
+      }
+    ]
+  ],
+  "presets": ["@babel/preset-env"]
+}

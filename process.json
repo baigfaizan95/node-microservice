@@ -2,7 +2,8 @@
   "apps": [
     {
       "name": "microservice",
-      "script": "./index.js",
+      "script": "npm",
+      "args": "start",
       "exec_mode": "cluster",
       "instances": 0,
       "max_restarts": 20,

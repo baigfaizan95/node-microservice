@@ -1,8 +1,15 @@
 'use strict';
 
-const { httpMessage } = require('./httpConstant');
+import { httpMessage } from '@utils/httpConstant';
 
-let errorResponse = function(req, res, code, error, userMessage, extraInfo) {
+export const errorResponse = function (
+  req,
+  res,
+  code,
+  error,
+  userMessage,
+  extraInfo
+) {
   let msg = '';
   let errRes = {};
   if (error) {
@@ -17,12 +24,12 @@ let errorResponse = function(req, res, code, error, userMessage, extraInfo) {
         internalCode: error.code || error.errno,
         errorName: error.name || error.type,
         internalMessage: error.message,
-        errorObject: error || error.errors
+        errorObject: error || error.errors,
       });
   } else {
     msg = userMessage || httpMessage[code];
     errRes = {
-      message: msg
+      message: msg,
     };
   }
   let requestData = {
@@ -31,14 +38,14 @@ let errorResponse = function(req, res, code, error, userMessage, extraInfo) {
     requestParam: req.param,
     requestBody: req.body || req.data,
     requestIp: req.ips || req.ip,
-    requestHeaders: req.headers
+    requestHeaders: req.headers,
   };
   logger('error', msg, {
     httpCode: code,
     error: errRes,
     extraInfo: extraInfo,
     requestData: requestData,
-    action: 'errorResponse'
+    action: 'errorResponse',
   });
   if (process.env.NODE_ENV === 'production') {
     delete errRes.stack;
@@ -47,28 +54,28 @@ let errorResponse = function(req, res, code, error, userMessage, extraInfo) {
   return res.status(code).json({
     code,
     error: errRes,
-    requestID: req.headers['requestid']
+    requestID: req.headers['requestid'],
   });
 };
 
-let successResponse = function(res, code, result) {
+export const successResponse = function (res, code, result) {
   if (result == null) {
     return res.sendStatus(code);
   } else {
     if (result.result) {
       return res.status(code).json({
         code,
-        ...result
+        ...result,
       });
     }
     return res.status(code).json({
       code,
-      result
+      result,
     });
   }
 };
 
-let paginatedResponse = function(
+export const paginatedResponse = function (
   res,
   code,
   result,
@@ -85,12 +92,6 @@ let paginatedResponse = function(
     offset,
     count,
     totalCount,
-    result
+    result,
   });
-};
-
-module.exports = {
-  errorResponse,
-  successResponse,
-  paginatedResponse
 };

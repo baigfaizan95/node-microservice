@@ -1,6 +1,6 @@
 'use strict';
 
-let httpCode = {
+export const httpCode = {
   ACCEPTED: 202,
   BAD_GATEWAY: 502,
   BAD_REQUEST: 400,
@@ -54,10 +54,10 @@ let httpCode = {
   UNAUTHORIZED: 401,
   UNPROCESSABLE_ENTITY: 422,
   UNSUPPORTED_MEDIA_TYPE: 415,
-  USE_PROXY: 305
+  USE_PROXY: 305,
 };
 
-let httpMessage = {
+export const httpMessage = {
   202: 'Accepted',
   502: 'Bad Gateway',
   400: 'Bad Request',
@@ -111,10 +111,5 @@ let httpMessage = {
   401: 'Unauthorized',
   422: 'Unprocessable Entity',
   415: 'Unsupported Media Type',
-  305: 'Use Proxy'
-};
-
-module.exports = {
-  httpCode,
-  httpMessage
+  305: 'Use Proxy',
 };

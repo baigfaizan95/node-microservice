@@ -1,12 +1,12 @@
-const WINSTON = require('winston');
+import WINSTON from 'winston';
 
-let consoleTransport = new WINSTON.transports.Console({
+const consoleTransport = new WINSTON.transports.Console({
   format: WINSTON.format.combine(
     WINSTON.format.colorize({ all: true }),
     WINSTON.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
+      format: 'YYYY-MM-DD HH:mm:ss',
     }),
-    WINSTON.format.printf(info => {
+    WINSTON.format.printf((info) => {
       const { timestamp, level, message, ...args } = info;
       const ts = timestamp.slice(0, 19).replace('T', ' ');
       return `[${ts}] [${level}]: ${message} ${
@@ -16,12 +16,12 @@ let consoleTransport = new WINSTON.transports.Console({
   ),
   handleExceptions: true,
   json: false,
-  timestamp: true
+  timestamp: true,
 });
 
-let logger = WINSTON.createLogger({
+const logger = WINSTON.createLogger({
   format: WINSTON.format.json(),
-  transports: [consoleTransport]
+  transports: [consoleTransport],
 });
 
-module.exports = logger;
+export default logger;

@@ -1,0 +1,8 @@
+export const EXCHANGE_TYPES_TOPIC = 'topic';
+export const EXCHANGE_TYPES_FANOUT = 'fanout';
+export const EXCHANGE_TYPES_DIRECT = 'direct';
+export const ALLOWED_EXCHANGE_TYPES = [
+  EXCHANGE_TYPES_TOPIC,
+  EXCHANGE_TYPES_FANOUT,
+  EXCHANGE_TYPES_DIRECT,
+];

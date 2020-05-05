@@ -1,30 +1,34 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const bodyParser = require('body-parser');
-const logger = require('../logger');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import logger from '@/logger';
 
-const { ALLOWED_HOSTS, NODE_ENV } = process.env;
+const ALLOWED_HOSTS = process.env.ALLOWED_HOSTS;
+const NODE_ENV = process.env.NODE_ENV;
 
 const initializeApp = (options = {}) => {
   const serverPort = options.PORT || 8000;
-  const enableCORS = options.enableCORS || false;
   const serviceName = options.serviceName || 'microservice';
 
   const app = express();
-  if (enableCORS) {
+  if (NODE_ENV !== 'production') {
     app.use(corsHandler());
+  } else {
+    app.use(cors());
   }
   app.disable('x-powered-by');
   app.use(helmet());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  app.listen(serverPort, function() {
+  app.listen(serverPort, () => {
     logger.info(
       `${NODE_ENV} server started on port ${serverPort} for ${serviceName}`
     );
   });
+
+  return app;
 };
 
 const corsHandler = () => {
@@ -33,15 +37,15 @@ const corsHandler = () => {
     throw new Error('Please set allowed Origins before running service');
   }
   const corsOptions = {
-    origin: function(origin, callback) {
+    origin: (origin, callback) => {
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
-    }
+    },
   };
   return cors(corsOptions);
 };
 
-module.exports = initializeApp;
+export default initializeApp;

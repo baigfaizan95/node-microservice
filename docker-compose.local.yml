@@ -1,0 +1,85 @@
+version: '3.7'
+services:
+  api:
+    build: './'
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - mongodb
+      - postgres
+      - rabbitmq
+    restart: on-failure
+    command: sh -c "/wait && npm run dev"
+    env_file: .env
+    environment:
+      WAIT_HOSTS: mongodb:27017, postgres:5432, rabbitmq:5672
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 30
+      WAIT_HOST_CONNECT_TIMEOUT: 30
+    logging:
+      options:
+        max-size: '5m'
+        max-file: '2'
+    networks:
+      - microservice
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - microservice
+    volumes:
+      - ./databases/redis:/data
+    restart: on-failure
+    logging:
+      driver: none
+
+  mongodb:
+    image: mongo
+    networks:
+      - microservice
+    ports:
+      - '27017:27017'
+    expose:
+      - 27017
+    restart: on-failure
+    volumes:
+      - ./databases/mongodb:/data/db
+    logging:
+      driver: none
+
+  postgres:
+    image: postgres
+    networks:
+      - microservice
+    ports:
+      - '5432:5432'
+    restart: on-failure
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: db
+    volumes:
+      - ./databases/postgres:/var/lib/postgresql
+    logging:
+      driver: none
+
+  rabbitmq:
+    image: rabbitmq:3.7-management-alpine
+    expose:
+      - 5672
+    ports:
+      - '8088:15672'
+    networks:
+      - microservice
+    volumes:
+      - ./databases/rabbitmq:/var/lib/rabbitmq
+    restart: on-failure
+    logging:
+      driver: none
+
+networks:
+  microservice:
+    driver: bridge

@@ -11,12 +11,12 @@ module.exports = {
       max: Number(process.env.SQL_POOL_LIMIT || 10),
       min: 0,
       acquire: 30000,
-      idle: 10000
+      idle: 10000,
     },
     define: {
       freezeTableName: true,
-      timestamps: false
-    }
+      timestamps: false,
+    },
   },
   production: {
     username: process.env.SQL_USER,
@@ -27,17 +27,17 @@ module.exports = {
     logging: false,
     replication: {
       read: [{ host: process.env.SQL_HOST_READ }],
-      write: { host: process.env.SQL_HOST_WRITE }
+      write: { host: process.env.SQL_HOST_WRITE },
     },
     pool: {
       max: Number(process.env.SQL_POOL_LIMIT || 10),
       min: 0,
       acquire: 30000,
-      idle: 10000
+      idle: 10000,
     },
     define: {
       freezeTableName: true,
-      timestamps: false
-    }
-  }
+      timestamps: false,
+    },
+  },
 };
