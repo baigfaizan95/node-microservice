@@ -49,12 +49,10 @@
   "lint-staged": {
     "*.{js}": [
       "npm run prettify",
-      "npm run lint",
-      "git add"
+      "npm run lint"
     ],
     "*.{json}": [
-      "npm run prettify",
-      "git add"
+      "npm run prettify"
     ]
   },
   "husky": {
