@@ -1,50 +1,45 @@
-'use strict';
-
 import { httpMessage } from '@utils/httpConstant';
+import logger from '@/logger';
 
-export const errorResponse = function (
+export const errorResponse = (
   req,
   res,
   code,
   error,
   userMessage,
   extraInfo
-) {
+) => {
   let msg = '';
   let errRes = {};
   if (error) {
-    (msg = userMessage || error.message || httpMessage[code]),
-      (errRes = {
-        message: msg,
-        stack: error.stack
-          ? error.stack
-          : error.error
-          ? error.error.stack
-          : null,
-        internalCode: error.code || error.errno,
-        errorName: error.name || error.type,
-        internalMessage: error.message,
-        errorObject: error || error.errors,
-      });
+    msg = userMessage || error.message || httpMessage[code];
+    errRes = {
+      message: msg,
+      stack: error.stack ? error.stack : error.error ? error.error.stack : null,
+      internalCode: error.code || error.errno,
+      errorName: error.name || error.type,
+      internalMessage: error.message,
+      errorObject: error || error.errors,
+    };
   } else {
     msg = userMessage || httpMessage[code];
     errRes = {
       message: msg,
     };
   }
-  let requestData = {
-    requestID: req.headers['requestid'],
+  const requestData = {
+    requestID: req.headers.requestid,
     requestQuery: req.query,
     requestParam: req.param,
     requestBody: req.body || req.data,
     requestIp: req.ips || req.ip,
     requestHeaders: req.headers,
   };
-  logger('error', msg, {
+  logger.error(msg, {
     httpCode: code,
     error: errRes,
-    extraInfo: extraInfo,
-    requestData: requestData,
+    extraInfo,
+    requestData,
     action: 'errorResponse',
   });
   if (process.env.NODE_ENV === 'production') {
@@ -54,28 +49,27 @@ export const errorResponse = function (
   return res.status(code).json({
     code,
     error: errRes,
-    requestID: req.headers['requestid'],
+    requestID: req.headers.requestid,
   });
 };
 
-export const successResponse = function (res, code, result) {
+export const successResponse = (res, code, result) => {
   if (result == null) {
     return res.sendStatus(code);
-  } else {
-    if (result.result) {
-      return res.status(code).json({
-        code,
-        ...result,
-      });
-    }
+  }
+  if (result.result) {
     return res.status(code).json({
       code,
-      result,
+      ...result,
     });
   }
+  return res.status(code).json({
+    code,
+    result,
+  });
 };
 
-export const paginatedResponse = function (
+export const paginatedResponse = (
   res,
   code,
   result,
@@ -84,8 +78,8 @@ export const paginatedResponse = function (
   offset,
   count,
   totalCount
-) {
-  return res.status(code).json({
+) =>
+  res.status(code).json({
     code,
     next,
     prev,
@@ -94,4 +88,3 @@ export const paginatedResponse = function (
     totalCount,
     result,
   });
-};

@@ -7,7 +7,7 @@ class Redis {
   constructor(uri) {
     if (uri) {
       this.client = redis.createClient(uri);
-      this.client.on('error', function (error) {
+      this.client.on('error', (error) => {
         throw error;
       });
     } else {
@@ -35,7 +35,8 @@ class Redis {
 
   async setByKey(key, value, ttl = null) {
     const set = promisify(this.client.set).bind(this.client);
-    let err, result;
+    let err;
+    let result;
     if (ttl) {
       [err, result] = await to(set(key, value, 'ex', ttl));
       if (err) {

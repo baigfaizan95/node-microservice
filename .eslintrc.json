@@ -1,0 +1,49 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": ["prettier", "airbnb-base"],
+  "plugins": ["prettier"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "object-curly-newline": 0,
+    "operator-linebreak": 0,
+    "function-paren-newline": 0,
+    "implicit-arrow-linebreak": 0,
+    "no-nested-ternary": 0,
+    "new-cap": 0,
+    "comma-dangle": 0,
+    "no-extra-semi": 1,
+    "no-return-await": 2,
+    "no-undef": 2,
+    "no-var": 2,
+    "no-unused-vars": [
+      2,
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "prettier/prettier": "error",
+    "no-array-constructor": 2,
+    "no-new-object": 2,
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all",
+        "ignoreReadBeforeAssign": false
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  }
+}

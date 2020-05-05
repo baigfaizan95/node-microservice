@@ -11,18 +11,17 @@ export default function (validator) {
       (err) => {
         if (err) {
           return res.status(500).json({ error: 'Error serving your request' });
-        } else {
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            const extractedErrors = errors.array().map((err) => {
-              return { [err.param]: err.msg };
-            });
-            return res.status(422).json({
-              errors: extractedErrors,
-            });
-          }
-          return next();
         }
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          const extractedErrors = errors
+            .array()
+            .map((error) => ({ [error.param]: err.msg }));
+          return res.status(422).json({
+            errors: extractedErrors,
+          });
+        }
+        return next();
       }
     );
   };

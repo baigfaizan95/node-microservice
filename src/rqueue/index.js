@@ -20,7 +20,6 @@ await producer.init();
 producer.send({msg: 'hello'});
 
 
-
 Example 2: Using exchange(fanout/direct/topic) and routing key
 
 let config = {
@@ -39,8 +38,6 @@ let config = {
 let producer = new Producer(config);
 await producer.init();
 producer.send({msg: 'hello'}, 'quick.brown.fox');
-
-
 
 
 ==================COCNSUMER USAGE==================
@@ -68,7 +65,6 @@ consumer.init((payload, done) => {
     <else>
       done()
   });
-
 
 
 Example 2: Bind to an exchange(fanout, direct, topic) using a bindingKey(not needed for fanout)

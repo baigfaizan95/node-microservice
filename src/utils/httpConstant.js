@@ -1,5 +1,3 @@
-'use strict';
-
 export const httpCode = {
   ACCEPTED: 202,
   BAD_GATEWAY: 502,

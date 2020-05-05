@@ -4,8 +4,25 @@ import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import logger from '@/logger';
 
-const ALLOWED_HOSTS = process.env.ALLOWED_HOSTS;
-const NODE_ENV = process.env.NODE_ENV;
+const { ALLOWED_HOSTS } = process.env;
+const { NODE_ENV } = process.env;
+
+const corsHandler = () => {
+  const allowedOrigins = (ALLOWED_HOSTS || '').split('||');
+  if (allowedOrigins.length < 1) {
+    throw new Error('Please set allowed Origins before running service');
+  }
+  const corsOptions = {
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  };
+  return cors(corsOptions);
+};
 
 const initializeApp = (options = {}) => {
   const serverPort = options.PORT || 8000;
@@ -29,23 +46,6 @@ const initializeApp = (options = {}) => {
   });
 
   return app;
-};
-
-const corsHandler = () => {
-  const allowedOrigins = (ALLOWED_HOSTS || '').split('||');
-  if (allowedOrigins.length < 1) {
-    throw new Error('Please set allowed Origins before running service');
-  }
-  const corsOptions = {
-    origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  };
-  return cors(corsOptions);
 };
 
 export default initializeApp;

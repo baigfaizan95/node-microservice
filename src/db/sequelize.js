@@ -11,7 +11,7 @@ const db = {};
 const sequelize = new Sequelize(config);
 const modelsPath = path.join(__dirname, '../models/sequelize');
 
-const SQL_HOST = process.env.SQL_HOST;
+const { SQL_HOST } = process.env;
 
 fs.readdirSync(modelsPath)
   .filter((file) => file.indexOf('.') !== 0 && file.slice(-3) === '.js')
